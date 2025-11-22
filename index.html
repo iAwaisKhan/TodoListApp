@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Stars Background -->
+    <div class="stars"></div>
+    <div class="stars2"></div>
+    <div class="stars3"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>✨ My Todo List</h1>
+            <p>Organize your day, one task at a time</p>
+        </div>
+
+        <div class="input-section">
+            <div class="input-wrapper">
+                <input type="text" id="taskInput" placeholder="What needs to be done?" aria-label="Add new task">
+                <button class="add-btn" onclick="addTask()">Add Task</button>
+            </div>
+            <div class="priority-selector">
+                <div class="priority-option selected" data-priority="low" onclick="selectPriority('low')">
+                    Low Priority
+                </div>
+                <div class="priority-option" data-priority="medium" onclick="selectPriority('medium')">
+                    Medium Priority
+                </div>
+                <div class="priority-option" data-priority="high" onclick="selectPriority('high')">
+                    High Priority
+                </div>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search tasks..." aria-label="Search tasks" oninput="filterTodos()">
+        </div>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all" onclick="setFilter('all')">All Tasks</button>
+            <button class="filter-tab" data-filter="active" onclick="setFilter('active')">Active</button>
+            <button class="filter-tab" data-filter="completed" onclick="setFilter('completed')">Completed</button>
+            <button class="filter-tab" data-filter="high" onclick="setFilter('high')">High Priority</button>
+            <button class="filter-tab" data-filter="medium" onclick="setFilter('medium')">Medium Priority</button>
+            <button class="filter-tab" data-filter="low" onclick="setFilter('low')">Low Priority</button>
+        </div>
+
+        <div class="stats">
+            <div class="stats-item">
+                <span>Total:</span>
+                <span class="stats-number" id="totalTasks">0</span>
+            </div>
+            <div class="stats-item">
+                <span>Active:</span>
+                <span class="stats-number" id="activeTasks">0</span>
+            </div>
+            <div class="stats-item">
+                <span>Completed:</span>
+                <span class="stats-number" id="completedTasks">0</span>
+            </div>
+        </div>
+
+        <div class="todo-list" id="todoList">
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 11l3 3L22 4"></path>
+                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                </svg>
+                <p>No tasks yet. Add one to get started!</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <button class="clear-btn" onclick="clearCompleted()">Clear Completed</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
