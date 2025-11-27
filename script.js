@@ -6,6 +6,150 @@ let currentSort = 'date'; // date, priority, alphabetical
 let undoStack = [];
 let redoStack = [];
 const MAX_UNDO_STACK = 50;
+let userName = '';
+
+// Initialize app
+function initializeApp() {
+    loadUserName();
+    updateClock();
+    loadTodos();
+    updateGreeting();
+    
+    // Update clock every second
+    setInterval(updateClock, 1000);
+    
+    // Update greeting every minute
+    setInterval(updateGreeting, 60000);
+}
+
+// Load user name from localStorage
+function loadUserName() {
+    userName = localStorage.getItem('userName') || '';
+    updateUserDisplay();
+}
+
+// Save user name to localStorage
+function saveUserName(name) {
+    userName = name.trim();
+    localStorage.setItem('userName', userName);
+    updateUserDisplay();
+    updateGreeting();
+}
+
+// Update user display
+function updateUserDisplay() {
+    const userNameElement = document.getElementById('userName');
+    if (userName) {
+        userNameElement.textContent = userName;
+        userNameElement.style.cursor = 'pointer';
+    } else {
+        userNameElement.textContent = 'Click to set name';
+        userNameElement.style.cursor = 'pointer';
+    }
+}
+
+// Edit user name
+function editUserName() {
+    const userNameElement = document.getElementById('userName');
+    const currentName = userName || '';
+    
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'user-name-input';
+    input.value = currentName;
+    input.placeholder = 'Enter your name';
+    
+    userNameElement.replaceWith(input);
+    input.focus();
+    input.select();
+    
+    const saveEdit = () => {
+        const newName = input.value.trim();
+        const newElement = document.createElement('div');
+        newElement.id = 'userName';
+        newElement.className = 'user-name';
+        newElement.onclick = editUserName;
+        
+        input.replaceWith(newElement);
+        
+        if (newName) {
+            saveUserName(newName);
+            showNotification('Name updated!', 'success');
+        } else {
+            updateUserDisplay();
+        }
+    };
+    
+    input.addEventListener('blur', saveEdit);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            saveEdit();
+        }
+    });
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const newElement = document.createElement('div');
+            newElement.id = 'userName';
+            newElement.className = 'user-name';
+            newElement.onclick = editUserName;
+            input.replaceWith(newElement);
+            updateUserDisplay();
+        }
+    });
+}
+
+// Update digital clock
+function updateClock() {
+    const now = new Date();
+    
+    // Update time
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const timeString = `${hours}:${minutes}:${seconds}`;
+    
+    const clockElement = document.getElementById('digitalClock');
+    if (clockElement) {
+        clockElement.textContent = timeString;
+    }
+    
+    // Update date
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateString = now.toLocaleDateString('en-US', options);
+    
+    const dateElement = document.getElementById('clockDate');
+    if (dateElement) {
+        dateElement.textContent = dateString;
+    }
+}
+
+// Update greeting based on time of day
+function updateGreeting() {
+    const now = new Date();
+    const hour = now.getHours();
+    let greeting = '';
+    
+    if (hour >= 5 && hour < 12) {
+        greeting = 'Good Morning';
+    } else if (hour >= 12 && hour < 17) {
+        greeting = 'Good Afternoon';
+    } else if (hour >= 17 && hour < 22) {
+        greeting = 'Good Evening';
+    } else {
+        greeting = 'Good Night';
+    }
+    
+    if (userName) {
+        greeting += `, ${userName}!`;
+    } else {
+        greeting += '!';
+    }
+    
+    const greetingElement = document.getElementById('userGreeting');
+    if (greetingElement) {
+        greetingElement.textContent = greeting;
+    }
+}
 
 // Load todos from localStorage on page load
 function loadTodos() {
@@ -635,8 +779,8 @@ function createShootingStar() {
 // Generate shooting stars periodically
 setInterval(createShootingStar, 4000);
 
-// Load todos on page load
-loadTodos();
+// Initialize app on page load
+initializeApp();
 
 // Create initial shooting stars
 for (let i = 0; i < 3; i++) {

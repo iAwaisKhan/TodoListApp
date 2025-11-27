@@ -157,6 +157,108 @@ body::before {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Top Bar with User and Clock */
+.top-bar {
+    background: var(--color-background);
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border);
+    gap: 20px;
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary) 0%, #667eea 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.user-greeting {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.user-name {
+    font-size: 18px;
+    color: var(--color-text);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.user-name:hover {
+    background: rgba(74, 144, 226, 0.1);
+    color: var(--color-primary);
+}
+
+.clock-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.digital-clock {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-text);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+    animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+    0%, 100% { text-shadow: 0 0 10px rgba(74, 144, 226, 0.3); }
+    50% { text-shadow: 0 0 20px rgba(74, 144, 226, 0.6); }
+}
+
+.clock-date {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.user-name-input {
+    padding: 8px 12px;
+    border: 2px solid var(--color-primary);
+    border-radius: 6px;
+    font-size: 16px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    outline: none;
+    font-weight: 600;
+    width: 200px;
+}
+
 .header {
     background: linear-gradient(135deg, var(--color-primary) 0%, #667eea 100%);
     padding: 50px 40px;
@@ -686,6 +788,22 @@ body::before {
 @media (max-width: 768px) {
     body { padding: 20px; }
     .container { max-width: 100%; }
+    .top-bar { 
+        padding: 15px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .user-section {
+        width: 100%;
+    }
+    .clock-section {
+        width: 100%;
+        align-items: flex-start;
+    }
+    .digital-clock {
+        font-size: 24px;
+    }
     .header { padding: 30px; }
     .header h1 { font-size: 28px; }
     .header p { font-size: 14px; }
