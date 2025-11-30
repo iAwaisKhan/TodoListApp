@@ -14,10 +14,44 @@
     --radius-sm: 10px;
 }
 
+/* Light Mode Variables */
+[data-theme="light"] {
+    --color-primary: #4a90e2;
+    --color-primary-hover: #357abd;
+    --color-primary-active: #2868a8;
+    --color-background: #f5f7fa;
+    --color-surface: #ffffff;
+    --color-text: #2c3e50;
+    --color-text-secondary: #5a6c7d;
+    --color-success: #27ae60;
+    --color-danger: #e74c3c;
+    --color-border: rgba(0, 0, 0, 0.1);
+    --color-shadow: rgba(0, 0, 0, 0.1);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Smooth transitions for theme switching */
+*,
+*::before,
+*::after {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+}
+
+/* Exclude specific animations from transition */
+.shooting-star,
+.stars,
+.stars2,
+.stars3,
+.digital-clock,
+.user-avatar {
+    transition-property: opacity;
 }
 
 body {
@@ -32,6 +66,19 @@ body {
     margin: 0;
     position: relative;
     overflow: hidden;
+    transition: background 0.3s ease;
+}
+
+/* Light mode body background */
+[data-theme="light"] body {
+    background: #e8ecf1;
+}
+
+[data-theme="light"] body::before {
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(74, 144, 226, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+        linear-gradient(135deg, #e8ecf1 0%, #f5f7fa 50%, #ffffff 100%);
 }
 
 /* Animated Nebula Background */
@@ -68,6 +115,18 @@ body::before {
     width: 100%;
     height: 100%;
     z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+/* Hide stars in light mode */
+[data-theme="light"] .stars,
+[data-theme="light"] .stars2,
+[data-theme="light"] .stars3 {
+    opacity: 0.1;
+}
+
+[data-theme="light"] .shooting-star {
+    opacity: 0;
 }
 
 .stars {
@@ -219,6 +278,64 @@ body::before {
     color: var(--color-primary);
 }
 
+/* Theme Toggle */
+.theme-toggle-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.theme-toggle {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    background: var(--color-border);
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    box-shadow: inset 0 2px 4px var(--color-shadow);
+}
+
+.theme-toggle:hover {
+    background: var(--color-primary);
+    transform: scale(1.05);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+.theme-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.sun-icon {
+    left: 8px;
+    opacity: 0;
+}
+
+.moon-icon {
+    right: 8px;
+    opacity: 1;
+}
+
+[data-theme="light"] .sun-icon {
+    opacity: 1;
+}
+
+[data-theme="light"] .moon-icon {
+    opacity: 0;
+}
+
+[data-theme="light"] .theme-toggle {
+    background: var(--color-primary);
+}
+
 .clock-section {
     display: flex;
     flex-direction: column;
@@ -266,6 +383,12 @@ body::before {
     color: white;
     position: relative;
     overflow: hidden;
+}
+
+/* Light mode header adjustments */
+[data-theme="light"] .header {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #667eea 100%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .header::before {
@@ -542,6 +665,19 @@ body::before {
     border: 1px solid #3498db;
 }
 
+/* Light mode priority badge adjustments */
+[data-theme="light"] .priority-high {
+    background: rgba(231, 76, 60, 0.2);
+}
+
+[data-theme="light"] .priority-medium {
+    background: rgba(243, 156, 18, 0.2);
+}
+
+[data-theme="light"] .priority-low {
+    background: rgba(52, 152, 219, 0.2);
+}
+
 .action-buttons {
     display: flex;
     gap: 10px;
@@ -797,6 +933,11 @@ body::before {
     .user-section {
         width: 100%;
     }
+    .theme-toggle-wrapper {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
     .clock-section {
         width: 100%;
         align-items: flex-start;
@@ -815,4 +956,36 @@ body::before {
     .stats-number { font-size: 22px; }
     .filter-tabs { flex-wrap: nowrap; overflow-x: auto; }
     .toast-notification { bottom: 20px; right: 20px; left: 20px; }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .stars, .stars2, .stars3, .shooting-star {
+        animation: none !important;
+    }
+}
+
+/* System theme preference support */
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+        --color-primary: #4a90e2;
+        --color-primary-hover: #357abd;
+        --color-primary-active: #2868a8;
+        --color-background: #f5f7fa;
+        --color-surface: #ffffff;
+        --color-text: #2c3e50;
+        --color-text-secondary: #5a6c7d;
+        --color-success: #27ae60;
+        --color-danger: #e74c3c;
+        --color-border: rgba(0, 0, 0, 0.1);
+        --color-shadow: rgba(0, 0, 0, 0.1);
+    }
 }

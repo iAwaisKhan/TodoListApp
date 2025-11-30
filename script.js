@@ -7,9 +7,11 @@ let undoStack = [];
 let redoStack = [];
 const MAX_UNDO_STACK = 50;
 let userName = '';
+let currentTheme = 'dark';
 
 // Initialize app
 function initializeApp() {
+    loadTheme();
     loadUserName();
     updateClock();
     loadTodos();
@@ -20,6 +22,64 @@ function initializeApp() {
     
     // Update greeting every minute
     setInterval(updateGreeting, 60000);
+}
+
+// Theme Management
+function loadTheme() {
+    let savedTheme = localStorage.getItem('theme');
+    
+    // If no saved theme, detect system preference
+    if (!savedTheme) {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            savedTheme = 'light';
+        } else {
+            savedTheme = 'dark';
+        }
+    }
+    
+    currentTheme = savedTheme;
+    applyTheme(savedTheme);
+    
+    // Listen for system theme changes
+    if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                const newTheme = e.matches ? 'light' : 'dark';
+                applyTheme(newTheme);
+            }
+        });
+    }
+}
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    currentTheme = theme;
+    localStorage.setItem('theme', theme);
+    
+    // Update meta theme-color for mobile browsers
+    let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (!metaThemeColor) {
+        metaThemeColor = document.createElement('meta');
+        metaThemeColor.name = 'theme-color';
+        document.head.appendChild(metaThemeColor);
+    }
+    metaThemeColor.content = theme === 'light' ? '#f5f7fa' : '#1a1a2e';
+}
+
+function toggleTheme() {
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(newTheme);
+    
+    // Add animation feedback
+    const button = document.getElementById('themeToggle');
+    if (button) {
+        button.style.transform = 'rotate(360deg)';
+        setTimeout(() => {
+            button.style.transform = '';
+        }, 300);
+    }
+    
+    showNotification(`Switched to ${newTheme} mode`, 'info');
 }
 
 // Load user name from localStorage
@@ -745,6 +805,11 @@ document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
         e.preventDefault();
         document.getElementById('taskInput').focus();
+    }
+    // Ctrl/Cmd + T for theme toggle
+    if ((e.ctrlKey || e.metaKey) && e.key === 't') {
+        e.preventDefault();
+        toggleTheme();
     }
 });
 
