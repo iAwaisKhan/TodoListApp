@@ -1,17 +1,17 @@
-# To-Do List Application 📝
+# To-Do List Application 
 
 ## Description
-A simple to-do app to add, complete, and delete tasks with smooth animations for easy task management. ✅✨
+A simple to-do app to add, complete, and delete tasks with smooth animations for easy task management.
 
 ## Features
-- Add new tasks ➕
-- Mark tasks as complete ✔️
-- Delete tasks 🗑️
-- Smooth transitions and animations 🎨
-- Task filtering and search 🔍
+- Add new tasks 
+- Mark tasks as complete 
+- Delete tasks 
+- Smooth transitions and animations
+- Task filtering and search 
 
 ## Installation
-1. Clone or download the project 📥
+1. Clone or download the project 
 2. Open `index.html` in your browser 
 
 ## Usage
@@ -21,4 +21,4 @@ A simple to-do app to add, complete, and delete tasks with smooth animations for
 - Use search and filter options for task organization 
 
 ## License
-This project is open source and free to use. 🆓
+This project is open source and free to use. 
